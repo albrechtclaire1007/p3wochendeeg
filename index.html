@@ -6,7 +6,6 @@
 <title>P3 D Wochendeeg Spiller</title>
 
 <style>
-  /* Font */
   @font-face{
     font-family:'Schoulschrëft';
     src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF') format('truetype');
@@ -18,7 +17,6 @@
     --ink:#173c57; --white:#fff; --ok:#b7f0c8; --bad:#ffcccc;
     --border:3px;
 
-    /* weekday colours for G1 only */
     --mon:#ff5aa5;
     --tue:#ff4b4b;
     --wed:#ffb23a;
@@ -38,7 +36,6 @@
     font-family:'Schoulschrëft', Arial, sans-serif;
   }
 
-  /* Top bar */
   .top{
     position:sticky; top:8px; z-index:20;
     display:flex; gap:10px; align-items:center; justify-content:center;
@@ -97,7 +94,6 @@
   }
   .hidden{display:none !important;}
 
-  /* Instruction box always above play area */
   .inst{
     border:var(--border) dashed var(--blue-dark);
     background:rgba(205,228,245,.45);
@@ -106,12 +102,8 @@
     font-size:clamp(1.05rem,2.4vmin,1.25rem);
     line-height:1.15;
   }
-  .inst b{font-weight:bold;}
 
-  .play{
-    margin-top:14px;
-  }
-
+  .play{ margin-top:14px; }
   .row{display:flex; gap:14px; flex-wrap:wrap; align-items:stretch; justify-content:center;}
   .col{flex:1 1 300px; min-width:280px;}
   .center{display:grid; place-items:center;}
@@ -134,7 +126,6 @@
     border-color:var(--blue-dark);
   }
   .btnSmall{font-size:1rem; padding:.45rem .75rem; border-radius:14px;}
-  .btnWide{width:100%;}
 
   .flash-good{ background:var(--ok)!important; border-color:var(--ok)!important; }
   .flash-bad{ background:var(--bad)!important; border-color:var(--bad)!important; }
@@ -153,12 +144,11 @@
     box-shadow:0 6px 16px rgba(0,0,0,.08);
   }
 
-  /* Calendar tag */
   .cal{
     border:4px solid #0000;
     border-radius:16px;
     padding:12px 14px;
-    min-width:160px;
+    min-width:180px;
     position:relative;
     background:#fff;
     box-shadow:0 8px 18px rgba(0,0,0,.08);
@@ -173,12 +163,11 @@
     background:currentColor;
     opacity:.95;
   }
-  .cal::before{ left:34px; }
-  .cal::after{ right:34px; }
-  .cal .label{font-size:1.45rem; text-align:center;}
-  .cal .small{opacity:.75; font-size:1rem;}
+  .cal::before{ left:36px; }
+  .cal::after{ right:36px; }
+  .cal .label{font-size:1.55rem; text-align:center;}
+  .cal .small{opacity:.75; font-size:1.05rem;}
 
-  /* Colored versions for G1 only */
   .cal.mon{ color:var(--mon); border-color:var(--mon); }
   .cal.tue{ color:var(--tue); border-color:var(--tue); }
   .cal.wed{ color:var(--wed); border-color:var(--wed); }
@@ -187,10 +176,10 @@
   .cal.sat{ color:var(--sat); border-color:var(--sat); }
   .cal.sun{ color:var(--sun); border-color:var(--sun); }
 
-  /* Black versions for G2 */
   .cal.black{
     color:var(--ink);
     border-color:#111;
+    min-width:140px;
   }
   .cal.black::before, .cal.black::after{ background:#111; }
 
@@ -201,22 +190,7 @@
     margin-top:10px;
   }
 
-  /* Tokens for G3 */
-  .token{
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    border:var(--border) solid var(--ink);
-    border-radius:16px;
-    padding:10px 12px;
-    background:#fff;
-    cursor:pointer;
-    box-shadow:0 6px 16px rgba(0,0,0,.08);
-  }
-  .token .tText{font-size:1.18rem; line-height:1.05;}
-  .token.selected{
-    border-color:var(--blue-dark);
-    box-shadow:0 0 0 4px rgba(79,124,160,.25);
-  }
-
+  /* G3 bins clickable */
   .bins{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -226,31 +200,33 @@
   .bin{
     border:var(--border) solid var(--ink);
     border-radius:18px;
-    padding:12px;
+    padding:14px;
     background:linear-gradient(180deg,#fff 0%, #f7fbff 100%);
-    min-height:160px;
-    display:flex; flex-direction:column; gap:10px;
+    min-height:170px;
+    display:flex; flex-direction:column; gap:12px;
+    cursor:pointer;
+    box-shadow:0 6px 16px rgba(0,0,0,.08);
   }
-  .binTitle{font-size:1.25rem;}
-  .binHint{opacity:.75; font-size:1rem; margin-top:-6px;}
+  .bin:active{ transform:scale(.995); }
+  .binTitle{font-size:1.35rem;}
   .binDrop{
     flex:1;
     border:2px dashed rgba(23,60,87,.35);
     border-radius:16px;
-    padding:10px;
-    display:flex; flex-direction:column; gap:8px;
+    padding:12px;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    font-size:1.2rem;
   }
 
-  .chip{
-    border:2px solid rgba(23,60,87,.35);
-    border-radius:999px;
-    padding:6px 10px;
-    background:#fff;
-    font-size:1.05rem;
-    display:flex; gap:8px; align-items:center;
+  .qTitle{
+    font-size:1.45rem;
+    margin-top:10px;
+    text-align:center;
   }
 
-  /* G5 mini week */
+  /* G4 mini week */
   .miniWeek{
     display:grid;
     grid-template-columns:repeat(7, 1fr);
@@ -270,60 +246,53 @@
     width:52px;
     height:52px;
     object-fit:contain;
-    image-rendering:auto;
-  }
-  .qTitle{
-    font-size:1.35rem;
-    margin-top:10px;
-    text-align:center;
   }
 </style>
 </head>
 
 <body>
   <div class="top">
-    <button class="iconBtn" id="prevBtn" title="Zreck">‹</button>
-    <div class="titleTop" id="topTitle">Wei een Dag</div>
+    <button class="iconBtn" id="prevBtn" title="Zréck">‹</button>
+    <div class="titleTop" id="topTitle">Wéi een Dag</div>
     <button class="iconBtn" id="nextBtn" title="Weider">›</button>
   </div>
 
   <div class="wrap">
     <h1>D Wochendeeg</h1>
 
-    <!-- GAME 1 -->
+    <!-- G1 -->
     <section class="card" id="g1">
       <div class="inst">
-        <b>Wei een Dag</b><br/>
-        Kuck den Dag a beantwer d Fro.
+        <b>Wéi een Dag</b><br/>
+        Kuck den Dag a beäntwer d Fro.
       </div>
 
       <div class="play">
         <div class="row">
           <div class="col center">
             <div id="g1Current" class="cal mon" style="transform:scale(1.1);">
-              <div class="small">Elo</div>
-              <div class="label">Meinden</div>
+              <div class="small">haut ass</div>
+              <div class="label">Méinden</div>
             </div>
-            <div class="qTitle" id="g1Question">Wei een Dag ass muer</div>
+            <div class="qTitle" id="g1Question">Wéi een Dag ass muer?</div>
             <div class="scoreLine">
-              <span class="badge" id="g1Prog">1 vun 10</span>
+              <span class="badge" id="g1Prog">1 vun 25</span>
               <button class="btn btnSmall" id="g1Restart">Neistarten</button>
             </div>
           </div>
 
           <div class="col">
-            <div class="muted" style="font-size:1.05rem; margin:6px 0 8px;">Wielt:</div>
             <div class="optGrid" id="g1Options"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- GAME 2 -->
+    <!-- G2 -->
     <section class="card hidden" id="g2">
       <div class="inst">
         <b>Wat feelt</b><br/>
-        Kuck gutt: d Woch get gewisen duerno verschwënnt een Dag Wei en Dag feelt
+        Kuck gutt: d Woch gëtt gewisen, duerno verschwënnt een Dag. Wéi en Dag feelt?
       </div>
 
       <div class="play">
@@ -337,60 +306,54 @@
             </div>
           </div>
           <div class="col">
-            <div class="muted" style="font-size:1.05rem; margin:6px 0 8px;">Wielt deen Dag:</div>
             <div class="optGrid" id="g2Options"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- GAME 3 -->
+    <!-- G3 -->
     <section class="card hidden" id="g3">
       <div class="inst">
-        <b>Ee Mol oder emmer</b><br/>
-        Lies de Saz a sortéier geschitt dat emmer oder just ee Mol
+        <b>Ee Mol oder ëmmer</b><br/>
+        Lies de Saz a sortéier: geschitt dat ëmmer oder just ee Mol?
       </div>
 
       <div class="play">
-        <div class="row">
-          <div class="col">
-            <div class="muted" style="margin:6px 0 10px;">Kaarten:</div>
-            <div class="row" id="g3Cards" style="justify-content:stretch;"></div>
-            <div class="scoreLine">
-              <span class="badge" id="g3Score">0 vun 10</span>
-              <button class="btn btnSmall" id="g3Restart">Neistarten</button>
-            </div>
-          </div>
+        <div class="qTitle" id="g3Sentence">Ech ginn e Méinden Fussball spillen.</div>
 
+        <div class="row" style="margin-top:12px;">
           <div class="col">
             <div class="bins">
-              <div class="bin">
+              <div class="bin" id="binOnce">
                 <div class="binTitle">Ee Mol</div>
-                <div class="binHint muted">zB e Meinden</div>
-                <div class="binDrop" id="binOnceDrop"></div>
-                <button class="btn btnSmall btnWide" data-bin="once">Hei tippen</button>
+                <div class="binDrop" id="binOnceDrop">Tippen hei</div>
               </div>
-              <div class="bin">
-                <div class="binTitle">Emmer</div>
-                <div class="binHint muted">zB meindes</div>
-                <div class="binDrop" id="binAlwaysDrop"></div>
-                <button class="btn btnSmall btnWide" data-bin="always">Hei tippen</button>
+              <div class="bin" id="binAlways">
+                <div class="binTitle">Ëmmer</div>
+                <div class="binDrop" id="binAlwaysDrop">Tippen hei</div>
               </div>
+            </div>
+
+            <div class="scoreLine">
+              <span class="badge" id="g3Prog">1 vun 25</span>
+              <button class="btn btnSmall" id="g3Restart">Neistarten</button>
+              <span class="badge muted" id="g3Status">Wielt</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- GAME 4 (your new G5) -->
+    <!-- G4 -->
     <section class="card hidden" id="g4">
       <div class="inst">
-        <b>Wei oft den Tommi</b><br/>
-        Kuck op de Kalenner a wielt Wei oft
+        <b>Wéi oft den Tommi</b><br/>
+        Kuck op de Kalenner a wielt: all Dag, oft, heiansdo oder ni.
       </div>
 
       <div class="play">
-        <div class="qTitle" id="g4Question">Wei oft liest den Tommi</div>
+        <div class="qTitle" id="g4Question">Wéi oft liest den Tommi?</div>
         <div class="miniWeek" id="g4MiniWeek"></div>
 
         <div class="optGrid" id="g4Options" style="margin-top:14px;"></div>
@@ -406,9 +369,9 @@
   </div>
 
 <script>
-/* helpers */
 const $ = (sel, root=document)=>root.querySelector(sel);
 const $$ = (sel, root=document)=>Array.from(root.querySelectorAll(sel));
+
 function shuffle(arr){
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){
@@ -424,9 +387,9 @@ function flash(el, good=true){
 }
 
 const days = [
-  {key:'mon', name:'Meinden', colorClass:'mon', adv:'meindes'},
-  {key:'tue', name:'Denschden', colorClass:'tue', adv:'denschdes'},
-  {key:'wed', name:'Mettwoch', colorClass:'wed', adv:'mettwochs'},
+  {key:'mon', name:'Méinden', colorClass:'mon', adv:'méindes'},
+  {key:'tue', name:'Dënschden', colorClass:'tue', adv:'dënschdes'},
+  {key:'wed', name:'Mëttwoch', colorClass:'wed', adv:'mëttwochs'},
   {key:'thu', name:'Donneschden', colorClass:'thu', adv:'donneschdes'},
   {key:'fri', name:'Freiden', colorClass:'fri', adv:'freides'},
   {key:'sat', name:'Samschden', colorClass:'sat', adv:'samschdes'},
@@ -441,13 +404,12 @@ const freq = [
 ];
 
 const gameTitles = [
-  'Wei een Dag',
+  'Wéi een Dag',
   'Wat feelt',
-  'Ee Mol oder emmer',
-  'Wei oft den Tommi'
+  'Ee Mol oder ëmmer',
+  'Wéi oft den Tommi'
 ];
 
-/* nav */
 const sections = ['g1','g2','g3','g4'];
 let currentIndex = 0;
 
@@ -455,7 +417,7 @@ function showGame(i){
   currentIndex = (i+sections.length) % sections.length;
   sections.forEach((id, idx)=>$('#'+id).classList.toggle('hidden', idx!==currentIndex));
   $('#topTitle').textContent = gameTitles[currentIndex];
-  // ensure init
+
   if(currentIndex===0) g1.ensure();
   if(currentIndex===1) g2.ensure();
   if(currentIndex===2) g3.ensure();
@@ -466,36 +428,44 @@ $('#prevBtn').addEventListener('click', ()=>showGame(currentIndex-1));
 $('#nextBtn').addEventListener('click', ()=>showGame(currentIndex+1));
 
 /* -------------------------
-   G1 Wei een Dag
-   Random day + random question type
+   G1 Wéi een Dag
+   25 random examples
+   Questions: muer, iwwermuer, gëschter, virgëschter
 --------------------------*/
 const g1 = (()=> {
   let started=false;
   let round=0;
-  const total=10;
-
+  const total=25;
   let currentIdx=0;
-  let qType=null; // 'muer' 'iwwermuer' 'geschter' 'virgeschter'
+  let qType='muer';
+
+  function randInt(min, max){
+    return Math.floor(Math.random()*(max-min+1))+min;
+  }
 
   function pickRound(){
-    // ensure offsets valid for all types by picking day index 2..4
-    currentIdx = 2 + Math.floor(Math.random()*3); // 2,3,4
-    const types = ['muer','iwwermuer','geschter','virgeschter'];
+    const types = ['muer','iwwermuer','gëschter','virgëschter'];
     qType = types[Math.floor(Math.random()*types.length)];
+
+    // pick a day index that makes the offset valid
+    if(qType==='muer') currentIdx = randInt(0, 5);
+    if(qType==='iwwermuer') currentIdx = randInt(0, 4);
+    if(qType==='gëschter') currentIdx = randInt(1, 6);
+    if(qType==='virgëschter') currentIdx = randInt(2, 6);
   }
 
   function offsetForType(t){
     if(t==='muer') return 1;
     if(t==='iwwermuer') return 2;
-    if(t==='geschter') return -1;
-    return -2; // virgeschter
+    if(t==='gëschter') return -1;
+    return -2;
   }
 
   function textForType(t){
-    if(t==='muer') return 'Wei een Dag ass muer';
-    if(t==='iwwermuer') return 'Wei een Dag ass iwwermuer';
-    if(t==='geschter') return 'Wei een Dag war geschter';
-    return 'Wei een Dag war virgeschter';
+    if(t==='muer') return 'Wéi een Dag ass muer?';
+    if(t==='iwwermuer') return 'Wéi een Dag ass iwwermuer?';
+    if(t==='gëschter') return 'Wéi een Dag war gëschter?';
+    return 'Wéi een Dag war virgëschter?';
   }
 
   function correctDay(){
@@ -508,6 +478,7 @@ const g1 = (()=> {
     const box = $('#g1Current');
     box.className = `cal ${d.colorClass}`;
     box.querySelector('.label').textContent = d.name;
+    box.querySelector('.small').textContent = 'haut ass';
     $('#g1Question').textContent = textForType(qType);
     $('#g1Prog').textContent = `${Math.min(round+1,total)} vun ${total}`;
   }
@@ -530,11 +501,10 @@ const g1 = (()=> {
         if(good){
           round++;
           if(round>=total){
-            // end screen inside options
             holder.innerHTML='';
             const end = document.createElement('div');
             end.className='inst';
-            end.innerHTML = '<b>Fäerdeg</b><br/>Neistarten fir nach eng Kéier';
+            end.innerHTML = '<b>Fäerdeg!</b><br/>Tippen op Neistarten.';
             holder.appendChild(end);
             return;
           }
@@ -568,29 +538,27 @@ const g1 = (()=> {
 
 /* -------------------------
    G2 Wat feelt
-   Black day boxes, remove missing day box entirely
-   Auto next round on correct
+   Black day boxes
+   Missing day removed
+   Random order in week AND random answer buttons
+   Auto next on correct
 --------------------------*/
 const g2 = (()=> {
   let started=false;
   let round=0;
   const total=12;
   let missingKey=null;
-  let phase='show'; // show or hide
   let canAnswer=false;
 
   function renderWeek(showAll){
     const row = $('#g2Week');
     row.innerHTML='';
 
-    days.forEach(d=>{
-      if(!showAll && d.key===missingKey){
-        // remove box entirely
-        return;
-      }
+    const order = shuffle(days);
+    order.forEach(d=>{
+      if(!showAll && d.key===missingKey) return;
       const el = document.createElement('div');
       el.className = 'cal black';
-      el.style.minWidth='140px';
       el.style.transform='scale(.95)';
       el.innerHTML = `<div class="small"></div><div class="label">${d.name}</div>`;
       row.appendChild(el);
@@ -631,30 +599,28 @@ const g2 = (()=> {
     $('#g2Prog').textContent = `${round+1} vun ${total}`;
     missingKey = shuffle(days)[0].key;
 
-    // show full week briefly
     $('#g2Status').textContent='Kuck gutt';
     renderWeek(true);
+    buildOptions(); // randomize options each round
     canAnswer=false;
     await new Promise(r=>setTimeout(r, 1100));
 
-    // hide missing
-    $('#g2Status').textContent='Wat feelt';
+    $('#g2Status').textContent='Wat feelt?';
     renderWeek(false);
     canAnswer=true;
   }
 
   function restart(){
     round=0;
-    missingKey = shuffle(days)[0].key;
     $('#g2Prog').textContent = `1 vun ${total}`;
+    missingKey = shuffle(days)[0].key;
     buildOptions();
-    // start first round
     (async ()=>{
       $('#g2Status').textContent='Kuck gutt';
       renderWeek(true);
       canAnswer=false;
       await new Promise(r=>setTimeout(r, 1100));
-      $('#g2Status').textContent='Wat feelt';
+      $('#g2Status').textContent='Wat feelt?';
       renderWeek(false);
       canAnswer=true;
     })();
@@ -671,94 +637,101 @@ const g2 = (()=> {
 })();
 
 /* -------------------------
-   G3 Ee Mol oder emmer
-   Remove answer tags on cards
+   G3 Ee Mol oder ëmmer
+   25 examples, one shown at a time
+   Whole bin clickable
+   More activities + both word orders
 --------------------------*/
 const g3 = (()=> {
   let started=false;
-  let pool=[];
-  let selectedId=null;
-  let done=0;
-  const total=10;
+  const total=25;
+  let items=[];
+  let idx=0;
+  let canAnswer=true;
 
-  function makeCard(item){
-    const el = document.createElement('div');
-    el.className='token';
-    el.dataset.id=item.id;
-    el.innerHTML = `<div class="tText">${item.text}</div>`;
-    el.addEventListener('click', ()=>{
-      if(el.classList.contains('hidden')) return;
-      $$('#g3Cards .token').forEach(x=>x.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedId = item.id;
-    });
-    return el;
+  const acts = [
+    {label:'Fussball spillen', obj:'Fussball spillen'},
+    {label:'Basket spillen', obj:'Basket spillen'},
+    {label:'danzen', obj:'danzen'},
+    {label:'schwammen', obj:'schwammen'},
+    {label:'molen', obj:'molen'},
+    {label:'liesen', obj:'liesen'},
+    {label:'turnen', obj:'turnen'},
+    {label:'spadséieren', obj:'spadséieren'},
+  ];
+
+  function makeItems(){
+    const tmp=[];
+    for(let i=0;i<total;i++){
+      const d = days[Math.floor(Math.random()*days.length)];
+      const a = acts[Math.floor(Math.random()*acts.length)];
+      const type = Math.random()<0.5 ? 'once' : 'always';
+
+      let text='';
+      if(type==='once'){
+        text = `Ech ginn <b>e ${d.name}</b> ${a.obj}.`;
+      }else{
+        // two variants to mix word order
+        if(Math.random()<0.5){
+          text = `<b>${d.adv}</b> ginn ech ${a.obj}.`;
+        }else{
+          text = `Ech ginn <b>${d.adv}</b> ${a.obj}.`;
+        }
+      }
+      tmp.push({type, text});
+    }
+    return tmp;
+  }
+
+  function render(){
+    const item = items[idx];
+    $('#g3Sentence').innerHTML = item.text;
+    $('#g3Prog').textContent = `${idx+1} vun ${total}`;
+    $('#g3Status').textContent = 'Wielt';
+    $('#binOnceDrop').textContent = 'Tippen hei';
+    $('#binAlwaysDrop').textContent = 'Tippen hei';
+    canAnswer=true;
+  }
+
+  function answer(chosen){
+    if(!canAnswer) return;
+    const item = items[idx];
+    const good = (chosen===item.type);
+    $('#g3Status').textContent = good ? 'Richteg' : 'Probéier nach eng Kéier';
+
+    if(chosen==='once') flash($('#binOnce'), good);
+    else flash($('#binAlways'), good);
+
+    if(good){
+      canAnswer=false;
+      setTimeout(()=>{
+        idx++;
+        if(idx>=total){
+          $('#g3Sentence').innerHTML = '<b>Alles richteg!</b>';
+          $('#g3Status').textContent = 'Fäerdeg';
+          $('#binOnceDrop').textContent = '';
+          $('#binAlwaysDrop').textContent = '';
+          return;
+        }
+        render();
+      }, 520);
+    }
   }
 
   function restart(){
-    done=0;
-    selectedId=null;
-    $('#g3Score').textContent = `${done} vun ${total}`;
-    $('#binOnceDrop').innerHTML='';
-    $('#binAlwaysDrop').innerHTML='';
-    const holder = $('#g3Cards');
-    holder.innerHTML='';
-
-    const base = shuffle(days).slice(0,5);
-    pool = [];
-    base.forEach(d=>{
-      pool.push({
-        id:`once_${d.key}`,
-        type:'once',
-        text:`Ech ginn <b>e ${d.name}</b> schwammen.`
-      });
-      pool.push({
-        id:`always_${d.key}`,
-        type:'always',
-        text:`Ech ginn <b>${d.adv}</b> schwammen.`
-      });
-    });
-
-    shuffle(pool).forEach(it=>holder.appendChild(makeCard(it)));
-  }
-
-  function place(binType){
-    if(selectedId==null) return;
-    const item = pool.find(x=>x.id===selectedId);
-    if(!item) return;
-
-    const card = $(`.token[data-id="${selectedId}"]`, $('#g3Cards'));
-    const good = (binType===item.type);
-    flash(card, good);
-
-    if(good){
-      card.classList.remove('selected');
-      card.classList.add('hidden');
-      selectedId=null;
-
-      const chip = document.createElement('div');
-      chip.className='chip';
-      chip.innerHTML = item.text;
-      if(binType==='once') $('#binOnceDrop').appendChild(chip);
-      else $('#binAlwaysDrop').appendChild(chip);
-
-      done++;
-      $('#g3Score').textContent = `${done} vun ${total}`;
-      if(done===total){
-        const end = document.createElement('div');
-        end.className='inst';
-        end.style.marginTop='10px';
-        end.innerHTML = '<b>Alles richteg</b>';
-        $('#g3Cards').appendChild(end);
-      }
-    }
+    items = makeItems();
+    idx=0;
+    render();
   }
 
   function ensure(){
     if(started) return;
     started=true;
     $('#g3Restart').addEventListener('click', restart);
-    $$('[data-bin]').forEach(btn=>btn.addEventListener('click', ()=>place(btn.dataset.bin)));
+
+    $('#binOnce').addEventListener('click', ()=>answer('once'));
+    $('#binAlways').addEventListener('click', ()=>answer('always'));
+
     restart();
   }
 
@@ -766,9 +739,8 @@ const g3 = (()=> {
 })();
 
 /* -------------------------
-   G4 Wei oft den Tommi
-   25 rounds with provided images
-   Show a mini week with 7 boxes, some filled with the activity image
+   G4 Wéi oft den Tommi
+   Your version kept, 25 rounds with given images
 --------------------------*/
 const g4 = (()=> {
   let started=false;
@@ -787,13 +759,12 @@ const g4 = (()=> {
   ];
 
   function makeWeekPattern(freqKey){
-    // returns boolean[7] for whether activity happens that day
     if(freqKey==='alldag') return Array(7).fill(true);
     if(freqKey==='ni') return Array(7).fill(false);
 
     let count = 0;
-    if(freqKey==='oft') count = 4 + Math.floor(Math.random()*3);      // 4..6
-    if(freqKey==='heiansdo') count = 1 + Math.floor(Math.random()*3); // 1..3
+    if(freqKey==='oft') count = 4 + Math.floor(Math.random()*3);
+    if(freqKey==='heiansdo') count = 1 + Math.floor(Math.random()*3);
 
     const idxs = shuffle([0,1,2,3,4,5,6]).slice(0, count);
     const arr = Array(7).fill(false);
@@ -802,7 +773,6 @@ const g4 = (()=> {
   }
 
   function buildItems(){
-    // create 25 mixed examples, shuffled each reload
     const buckets = ['alldag','oft','heiansdo','ni'];
     const tmp = [];
     for(let i=0;i<total;i++){
@@ -826,7 +796,7 @@ const g4 = (()=> {
     $('#g4Status').textContent = 'Wielt';
     canAnswer=true;
 
-    $('#g4Question').textContent = `Wei oft ${current.verb} den Tommi`;
+    $('#g4Question').textContent = `Wéi oft ${current.verb} den Tommi?`;
 
     const week = $('#g4MiniWeek');
     week.innerHTML='';
@@ -839,11 +809,11 @@ const g4 = (()=> {
         img.alt = current.label;
         cell.appendChild(img);
       }else{
-        const dot = document.createElement('div');
-        dot.className='muted';
-        dot.style.fontSize='1.4rem';
-        dot.textContent=' ';
-        cell.appendChild(dot);
+        const blank = document.createElement('div');
+        blank.className='muted';
+        blank.style.fontSize='1.2rem';
+        blank.textContent='';
+        cell.appendChild(blank);
       }
       week.appendChild(cell);
     }
@@ -865,7 +835,7 @@ const g4 = (()=> {
             round++;
             if(round>=total){
               $('#g4Status').textContent='Fäerdeg';
-              $('#g4Question').textContent='Alles richteg';
+              $('#g4Question').innerHTML='<b>Alles richteg!</b>';
               opts.innerHTML='';
               return;
             }
