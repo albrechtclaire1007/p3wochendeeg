@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>P3 – D'Wochendeeg (Spiller 1–5)</title>
+<title>P3 D Wochendeeg Spiller</title>
 
 <style>
   /* Font */
@@ -18,7 +18,7 @@
     --ink:#173c57; --white:#fff; --ok:#b7f0c8; --bad:#ffcccc;
     --border:3px;
 
-    /* weekday colours (close to your chapter) */
+    /* weekday colours for G1 only */
     --mon:#ff5aa5;
     --tue:#ff4b4b;
     --wed:#ffb23a;
@@ -47,7 +47,7 @@
     border-radius:18px;
     padding:.35rem .6rem;
     margin:10px auto;
-    width:fit-content;
+    width:min(980px, 96vw);
     box-shadow:var(--shadow);
   }
   .iconBtn{
@@ -57,13 +57,22 @@
     padding:.25rem .7rem;
     border-radius:14px;
     cursor:pointer;
-    font-size:1.4rem;
+    font-size:1.55rem;
     line-height:1;
-    min-width:2.4rem;
+    min-width:2.6rem;
     display:grid; place-items:center;
   }
   .iconBtn:active{ transform:scale(.98); }
-  .flow{opacity:.9; font-size:1rem; padding:0 .4rem; min-width:12ch; text-align:center;}
+  .titleTop{
+    flex:1;
+    text-align:center;
+    font-size:1.25rem;
+    opacity:.95;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
   .wrap{
     min-height:100%;
     display:flex; flex-direction:column; align-items:center;
@@ -77,12 +86,6 @@
     font-size:clamp(1.7rem,5.5vmin,3.4rem);
     color:var(--ink);
   }
-  .subtitle{
-    text-align:center;
-    opacity:.9;
-    font-size:clamp(1rem,2.2vmin,1.2rem);
-    margin-top:-.35rem;
-  }
 
   .card{
     width:min(980px, 96vw);
@@ -92,11 +95,27 @@
     box-shadow:var(--shadow);
     padding:clamp(12px,2.2vmin,20px);
   }
+  .hidden{display:none !important;}
+
+  /* Instruction box always above play area */
+  .inst{
+    border:var(--border) dashed var(--blue-dark);
+    background:rgba(205,228,245,.45);
+    border-radius:18px;
+    padding:12px 14px;
+    font-size:clamp(1.05rem,2.4vmin,1.25rem);
+    line-height:1.15;
+  }
+  .inst b{font-weight:bold;}
+
+  .play{
+    margin-top:14px;
+  }
 
   .row{display:flex; gap:14px; flex-wrap:wrap; align-items:stretch; justify-content:center;}
   .col{flex:1 1 300px; min-width:280px;}
   .center{display:grid; place-items:center;}
-  .hidden{display:none !important;}
+  .muted{opacity:.75;}
 
   .btn{
     border:var(--border) solid var(--ink);
@@ -110,24 +129,28 @@
     box-shadow:0 5px 16px rgba(0,0,0,.07);
   }
   .btn:active{ transform:scale(.98); }
-  .btnWide{width:100%;}
-  .btnSmall{font-size:1rem; padding:.45rem .75rem; border-radius:14px;}
   .btnPrimary{
     background:linear-gradient(180deg,#ffffff 0%, #f3fbff 100%);
     border-color:var(--blue-dark);
   }
+  .btnSmall{font-size:1rem; padding:.45rem .75rem; border-radius:14px;}
+  .btnWide{width:100%;}
 
   .flash-good{ background:var(--ok)!important; border-color:var(--ok)!important; }
   .flash-bad{ background:var(--bad)!important; border-color:var(--bad)!important; }
 
-  /* Instruction box */
-  .inst{
-    border:var(--border) dashed var(--blue-dark);
-    background:rgba(205,228,245,.45);
-    border-radius:18px;
-    padding:12px 14px;
-    font-size:clamp(1.05rem,2.4vmin,1.25rem);
-    line-height:1.15;
+  .scoreLine{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:10px; flex-wrap:wrap;
+    margin-top:12px;
+  }
+  .badge{
+    border:var(--border) solid var(--ink);
+    background:#fff;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:1.1rem;
+    box-shadow:0 6px 16px rgba(0,0,0,.08);
   }
 
   /* Calendar tag */
@@ -135,7 +158,7 @@
     border:4px solid #0000;
     border-radius:16px;
     padding:12px 14px;
-    min-width:150px;
+    min-width:160px;
     position:relative;
     background:#fff;
     box-shadow:0 8px 18px rgba(0,0,0,.08);
@@ -150,10 +173,12 @@
     background:currentColor;
     opacity:.95;
   }
-  .cal::before{ left:32px; }
-  .cal::after{ right:32px; }
-  .cal .label{font-size:1.35rem; text-align:center;}
+  .cal::before{ left:34px; }
+  .cal::after{ right:34px; }
+  .cal .label{font-size:1.45rem; text-align:center;}
   .cal .small{opacity:.75; font-size:1rem;}
+
+  /* Colored versions for G1 only */
   .cal.mon{ color:var(--mon); border-color:var(--mon); }
   .cal.tue{ color:var(--tue); border-color:var(--tue); }
   .cal.wed{ color:var(--wed); border-color:var(--wed); }
@@ -162,7 +187,13 @@
   .cal.sat{ color:var(--sat); border-color:var(--sat); }
   .cal.sun{ color:var(--sun); border-color:var(--sun); }
 
-  /* Options grid */
+  /* Black versions for G2 */
+  .cal.black{
+    color:var(--ink);
+    border-color:#111;
+  }
+  .cal.black::before, .cal.black::after{ background:#111; }
+
   .optGrid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
@@ -170,7 +201,7 @@
     margin-top:10px;
   }
 
-  /* Pill tokens */
+  /* Tokens for G3 */
   .token{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     border:var(--border) solid var(--ink);
@@ -181,19 +212,17 @@
     box-shadow:0 6px 16px rgba(0,0,0,.08);
   }
   .token .tText{font-size:1.18rem; line-height:1.05;}
-  .token .tTag{
-    font-size:1rem; opacity:.8;
-    border:2px solid rgba(0,0,0,.2);
-    padding:4px 10px;
-    border-radius:999px;
-  }
   .token.selected{
     border-color:var(--blue-dark);
     box-shadow:0 0 0 4px rgba(79,124,160,.25);
   }
 
-  /* Sorting bins */
-  .bins{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-top:12px;}
+  .bins{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:12px;
+    margin-top:10px;
+  }
   .bin{
     border:var(--border) solid var(--ink);
     border-radius:18px;
@@ -212,33 +241,6 @@
     display:flex; flex-direction:column; gap:8px;
   }
 
-  /* Funnel */
-  .funnelWrap{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-    align-items:stretch;
-  }
-  @media (max-width: 760px){
-    .funnelWrap{ grid-template-columns:1fr; }
-  }
-  .funnel{
-    border:var(--border) solid var(--ink);
-    border-radius:18px;
-    padding:12px;
-    background:#fff;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .zone{
-    border:2px dashed rgba(23,60,87,.35);
-    border-radius:16px;
-    padding:10px;
-    min-height:74px;
-    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
-  }
-  .zoneTitle{font-size:1.2rem; margin-bottom:6px;}
   .chip{
     border:2px solid rgba(23,60,87,.35);
     border-radius:999px;
@@ -248,111 +250,71 @@
     display:flex; gap:8px; align-items:center;
   }
 
-  /* Tommi week */
-  .weekGrid{
+  /* G5 mini week */
+  .miniWeek{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:12px;
-    margin-top:10px;
-  }
-  .dayPanel{
-    border:var(--border) solid var(--ink);
-    border-radius:18px;
-    padding:10px;
-    background:#fff;
-    box-shadow:0 6px 16px rgba(0,0,0,.08);
-    cursor:pointer;
-    position:relative;
-    overflow:hidden;
-  }
-  .dayPanel.active{ box-shadow:0 0 0 4px rgba(79,124,160,.25), 0 10px 26px rgba(0,0,0,.10); }
-  .dayPanel .dpTitle{font-size:1.25rem;}
-  .acts{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
-  .actIcon{
-    width:40px; height:40px; border-radius:999px;
-    border:2px solid rgba(23,60,87,.25);
-    display:grid; place-items:center;
-    font-size:1.35rem;
-    background:linear-gradient(180deg,#fff 0%, #f4fbff 100%);
-  }
-
-  .qBox{
-    margin-top:14px;
-    border:var(--border) dashed var(--blue-dark);
-    border-radius:18px;
-    background:rgba(205,228,245,.35);
-    padding:12px;
-  }
-  .qTitle{font-size:1.25rem; margin-bottom:8px;}
-  .mc{display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px;}
-  .mc .btn{width:100%;}
-  .scoreLine{
-    display:flex; justify-content:space-between; align-items:center;
-    gap:10px; flex-wrap:wrap;
+    grid-template-columns:repeat(7, 1fr);
+    gap:10px;
     margin-top:12px;
   }
-  .badge{
-    border:var(--border) solid var(--ink);
-    background:#fff;
-    border-radius:999px;
-    padding:8px 12px;
-    font-size:1.1rem;
-    box-shadow:0 6px 16px rgba(0,0,0,.08);
+  .miniDay{
+    border:2px solid rgba(23,60,87,.35);
+    border-radius:16px;
+    padding:10px;
+    background:linear-gradient(180deg,#fff 0%, #f4fbff 100%);
+    display:grid;
+    place-items:center;
+    min-height:92px;
   }
-  .muted{opacity:.75;}
+  .miniDay img{
+    width:52px;
+    height:52px;
+    object-fit:contain;
+    image-rendering:auto;
+  }
+  .qTitle{
+    font-size:1.35rem;
+    margin-top:10px;
+    text-align:center;
+  }
 </style>
 </head>
 
 <body>
   <div class="top">
-    <button class="iconBtn" id="homeBtn" title="Menu">⌂</button>
-    <button class="iconBtn" id="prevBtn" title="Zréck">‹</button>
-    <div class="flow" id="flowTxt">Spill 1/5</div>
+    <button class="iconBtn" id="prevBtn" title="Zreck">‹</button>
+    <div class="titleTop" id="topTitle">Wei een Dag</div>
     <button class="iconBtn" id="nextBtn" title="Weider">›</button>
   </div>
 
   <div class="wrap">
-    <h1>D'Wochendeeg</h1>
-    <div class="subtitle muted">Spiller 1–5 (Prep fir d'Aarbechtsblieder)</div>
-
-    <!-- MENU -->
-    <section class="card" id="menu">
-      <div class="inst">
-        <b>Wielt e Spill.</b><br/>
-        Dës Spiller preparéieren d'Kanner fir d'Aarbechtsblieder (Reiefolleg, -s Form, Wéi oft?, Tommi seng Woch).
-      </div>
-
-      <div class="optGrid" style="margin-top:14px;">
-        <button class="btn btnPrimary" data-go="0">1) D'Woch leeft (Reiefolleg)</button>
-        <button class="btn btnPrimary" data-go="1">2) De verschwonnene Dag</button>
-        <button class="btn btnPrimary" data-go="2">3) Dag oder ëmmer? (-s)</button>
-        <button class="btn btnPrimary" data-go="3">4) Wéi oft? (Funnel)</button>
-        <button class="btn btnPrimary" data-go="4">5) Dem Tommi seng Woch</button>
-      </div>
-    </section>
+    <h1>D Wochendeeg</h1>
 
     <!-- GAME 1 -->
-    <section class="card hidden" id="g1">
+    <section class="card" id="g1">
       <div class="inst">
-        <b>Spill 1 – D'Woch leeft</b><br/>
-        Kuck: <b>wéi en Dag</b> ass do? Wielt <b>deen nächsten</b> Dag an der Reiefolleg.
+        <b>Wei een Dag</b><br/>
+        Kuck den Dag a beantwer d Fro.
       </div>
 
-      <div class="row" style="margin-top:12px;">
-        <div class="col center">
-          <div id="g1Current" class="cal mon" style="transform:scale(1.1);">
-            <div class="small">Elo</div>
-            <div class="label">Méinden</div>
+      <div class="play">
+        <div class="row">
+          <div class="col center">
+            <div id="g1Current" class="cal mon" style="transform:scale(1.1);">
+              <div class="small">Elo</div>
+              <div class="label">Meinden</div>
+            </div>
+            <div class="qTitle" id="g1Question">Wei een Dag ass muer</div>
+            <div class="scoreLine">
+              <span class="badge" id="g1Prog">1 vun 10</span>
+              <button class="btn btnSmall" id="g1Restart">Neistarten</button>
+            </div>
           </div>
-          <div class="scoreLine">
-            <span class="badge" id="g1Prog">0/6</span>
-            <button class="btn btnSmall" id="g1Restart">Neistarten</button>
-          </div>
-        </div>
 
-        <div class="col">
-          <div class="muted" style="font-size:1.05rem; margin:6px 0 8px;">Wielt den <b>nächsten</b> Dag:</div>
-          <div class="optGrid" id="g1Options"></div>
+          <div class="col">
+            <div class="muted" style="font-size:1.05rem; margin:6px 0 8px;">Wielt:</div>
+            <div class="optGrid" id="g1Options"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -360,22 +322,24 @@
     <!-- GAME 2 -->
     <section class="card hidden" id="g2">
       <div class="inst">
-        <b>Spill 2 – De verschwonnene Dag</b><br/>
-        Kuck gutt: d'Woch gëtt gewisen… duerno verschwënnt <b>een</b> Dag. Wéi en Dag feelt?
+        <b>Wat feelt</b><br/>
+        Kuck gutt: d Woch get gewisen duerno verschwënnt een Dag Wei en Dag feelt
       </div>
 
-      <div class="row" style="margin-top:12px;">
-        <div class="col">
-          <div class="row" id="g2Week" style="justify-content:center;"></div>
-          <div class="scoreLine">
-            <span class="badge" id="g2Status">Bereet?</span>
-            <button class="btn btnSmall" id="g2Start">Start</button>
-            <button class="btn btnSmall" id="g2New">Nei Ronn</button>
+      <div class="play">
+        <div class="row">
+          <div class="col">
+            <div class="row" id="g2Week" style="justify-content:center;"></div>
+            <div class="scoreLine">
+              <span class="badge" id="g2Prog">1 vun 12</span>
+              <button class="btn btnSmall" id="g2Restart">Neistarten</button>
+              <span class="badge muted" id="g2Status">Kuck gutt</span>
+            </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="muted" style="font-size:1.05rem; margin:6px 0 8px;">Wielt deen Dag deen <b>feelt</b>:</div>
-          <div class="optGrid" id="g2Options"></div>
+          <div class="col">
+            <div class="muted" style="font-size:1.05rem; margin:6px 0 8px;">Wielt deen Dag:</div>
+            <div class="optGrid" id="g2Options"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -383,98 +347,58 @@
     <!-- GAME 3 -->
     <section class="card hidden" id="g3">
       <div class="inst">
-        <b>Spill 3 – Dag oder ëmmer?</b><br/>
-        Tippen: wielt eng Kaart. Da tipps du op déi richteg Këscht:
-        <b>En Dag</b> (Méinden…) oder <b>Reegelméisseg</b> (méindes…).
+        <b>Ee Mol oder emmer</b><br/>
+        Lies de Saz a sortéier geschitt dat emmer oder just ee Mol
       </div>
 
-      <div class="row" style="margin-top:12px;">
-        <div class="col">
-          <div class="muted" style="margin:6px 0 10px;">Kaarten:</div>
-          <div class="row" id="g3Cards" style="justify-content:stretch;"></div>
-          <div class="scoreLine">
-            <span class="badge" id="g3Score">0/10</span>
-            <button class="btn btnSmall" id="g3Restart">Neistarten</button>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="bins">
-            <div class="bin" id="binDay">
-              <div class="binTitle">En Dag</div>
-              <div class="binHint muted">z.B. <b>e Méinden</b></div>
-              <div class="binDrop" id="binDayDrop"></div>
-              <button class="btn btnSmall btnWide" data-bin="day">Hei drop tippen</button>
+      <div class="play">
+        <div class="row">
+          <div class="col">
+            <div class="muted" style="margin:6px 0 10px;">Kaarten:</div>
+            <div class="row" id="g3Cards" style="justify-content:stretch;"></div>
+            <div class="scoreLine">
+              <span class="badge" id="g3Score">0 vun 10</span>
+              <button class="btn btnSmall" id="g3Restart">Neistarten</button>
             </div>
-            <div class="bin" id="binReg">
-              <div class="binTitle">Reegelméisseg</div>
-              <div class="binHint muted">z.B. <b>méindes</b></div>
-              <div class="binDrop" id="binRegDrop"></div>
-              <button class="btn btnSmall btnWide" data-bin="reg">Hei drop tippen</button>
+          </div>
+
+          <div class="col">
+            <div class="bins">
+              <div class="bin">
+                <div class="binTitle">Ee Mol</div>
+                <div class="binHint muted">zB e Meinden</div>
+                <div class="binDrop" id="binOnceDrop"></div>
+                <button class="btn btnSmall btnWide" data-bin="once">Hei tippen</button>
+              </div>
+              <div class="bin">
+                <div class="binTitle">Emmer</div>
+                <div class="binHint muted">zB meindes</div>
+                <div class="binDrop" id="binAlwaysDrop"></div>
+                <button class="btn btnSmall btnWide" data-bin="always">Hei tippen</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- GAME 4 -->
+    <!-- GAME 4 (your new G5) -->
     <section class="card hidden" id="g4">
       <div class="inst">
-        <b>Spill 4 – Wéi oft?</b><br/>
-        Wielt eng Aktivitéit (Tippen). Da tipps du op déi richteg Zone am Funnel:
-        <b>all Dag</b>, <b>oft</b>, <b>heiansdo</b> oder <b>ni</b>.
+        <b>Wei oft den Tommi</b><br/>
+        Kuck op de Kalenner a wielt Wei oft
       </div>
 
-      <div class="funnelWrap" style="margin-top:12px;">
-        <div class="col">
-          <div class="muted" style="margin:6px 0 10px;">Aktivitéiten:</div>
-          <div class="row" id="g4Acts" style="justify-content:stretch;"></div>
-          <div class="scoreLine">
-            <span class="badge" id="g4Score">0/8</span>
-            <button class="btn btnSmall" id="g4Restart">Neistarten</button>
-          </div>
-        </div>
+      <div class="play">
+        <div class="qTitle" id="g4Question">Wei oft liest den Tommi</div>
+        <div class="miniWeek" id="g4MiniWeek"></div>
 
-        <div class="funnel">
-          <div class="zoneBlock">
-            <div class="zoneTitle">all Dag</div>
-            <div class="zone" data-zone="alldag"></div>
-            <button class="btn btnSmall btnWide" data-zonebtn="alldag">Hei tippen</button>
-          </div>
-          <div class="zoneBlock">
-            <div class="zoneTitle">oft</div>
-            <div class="zone" data-zone="oft"></div>
-            <button class="btn btnSmall btnWide" data-zonebtn="oft">Hei tippen</button>
-          </div>
-          <div class="zoneBlock">
-            <div class="zoneTitle">heiansdo</div>
-            <div class="zone" data-zone="heiansdo"></div>
-            <button class="btn btnSmall btnWide" data-zonebtn="heiansdo">Hei tippen</button>
-          </div>
-          <div class="zoneBlock">
-            <div class="zoneTitle">ni</div>
-            <div class="zone" data-zone="ni"></div>
-            <button class="btn btnSmall btnWide" data-zonebtn="ni">Hei tippen</button>
-          </div>
-        </div>
-      </div>
-    </section>
+        <div class="optGrid" id="g4Options" style="margin-top:14px;"></div>
 
-    <!-- GAME 5 -->
-    <section class="card hidden" id="g5">
-      <div class="inst">
-        <b>Spill 5 – Dem Tommi seng Woch</b><br/>
-        Tippen op en Dag a kuck wat den Tommi mécht. Duerno beäntwers du Froen: <b>Wéi oft …?</b>
-      </div>
-
-      <div class="weekGrid" id="g5Week" style="margin-top:12px;"></div>
-
-      <div class="qBox" id="g5QBox">
-        <div class="qTitle" id="g5QTitle">Fro kënnt gläich…</div>
-        <div class="mc" id="g5MC"></div>
         <div class="scoreLine">
-          <span class="badge" id="g5Score">0/5</span>
-          <button class="btn btnSmall" id="g5Restart">Neistarten</button>
+          <span class="badge" id="g4Prog">1 vun 25</span>
+          <button class="btn btnSmall" id="g4Restart">Neistarten</button>
+          <span class="badge muted" id="g4Status">Wielt</span>
         </div>
       </div>
     </section>
@@ -482,12 +406,9 @@
   </div>
 
 <script>
-/* -------------------------
-   Shared helpers + data
---------------------------*/
+/* helpers */
 const $ = (sel, root=document)=>root.querySelector(sel);
 const $$ = (sel, root=document)=>Array.from(root.querySelectorAll(sel));
-
 function shuffle(arr){
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){
@@ -499,127 +420,139 @@ function shuffle(arr){
 function flash(el, good=true){
   el.classList.remove('flash-good','flash-bad');
   el.classList.add(good ? 'flash-good' : 'flash-bad');
-  setTimeout(()=>el.classList.remove('flash-good','flash-bad'), 350);
+  setTimeout(()=>el.classList.remove('flash-good','flash-bad'), 320);
 }
 
 const days = [
-  {key:'mon', name:'Méinden', colorClass:'mon', adv:'méindes'},
-  {key:'tue', name:'Dënschden', colorClass:'tue', adv:'dënschdes'},
-  {key:'wed', name:'Mëttwoch', colorClass:'wed', adv:'mëttwochs'},
+  {key:'mon', name:'Meinden', colorClass:'mon', adv:'meindes'},
+  {key:'tue', name:'Denschden', colorClass:'tue', adv:'denschdes'},
+  {key:'wed', name:'Mettwoch', colorClass:'wed', adv:'mettwochs'},
   {key:'thu', name:'Donneschden', colorClass:'thu', adv:'donneschdes'},
   {key:'fri', name:'Freiden', colorClass:'fri', adv:'freides'},
   {key:'sat', name:'Samschden', colorClass:'sat', adv:'samschdes'},
   {key:'sun', name:'Sonnden', colorClass:'sun', adv:'sonndes'},
 ];
 
-const freqLabels = {
-  alldag: "all Dag",
-  oft: "oft",
-  heiansdo: "heiansdo",
-  ni: "ni"
-};
-
-/* Simple activity set (icons are emoji placeholders; swap to your chapter icons later) */
-const activities = [
-  {key:'kachen', label:'kachen', icon:'👩‍🍳'},
-  {key:'molen', label:'molen', icon:'🎨'},
-  {key:'tele', label:'Tëlee kucken', icon:'📺'},
-  {key:'schwammen', label:'schwammen', icon:'🏊'},
-  {key:'duschen', label:'duschen', icon:'🚿'},
-  {key:'bitzen', label:'bitzen', icon:'🧹'},
-  {key:'turnen', label:'turnen', icon:'🤸'},
-  {key:'spads', label:'spadséieren', icon:'🚶'},
+const freq = [
+  {key:'alldag', label:'all Dag'},
+  {key:'oft', label:'oft'},
+  {key:'heiansdo', label:'heiansdo'},
+  {key:'ni', label:'ni'},
 ];
 
-/* -------------------------
-   Navigation (5 games + menu)
---------------------------*/
-const sections = ['g1','g2','g3','g4','g5'];
-let currentIndex = -1; // -1 = menu
+const gameTitles = [
+  'Wei een Dag',
+  'Wat feelt',
+  'Ee Mol oder emmer',
+  'Wei oft den Tommi'
+];
 
-function showMenu(){
-  currentIndex = -1;
-  $('#menu').classList.remove('hidden');
-  sections.forEach(id=>$('#'+id).classList.add('hidden'));
-  $('#flowTxt').textContent = 'Menu';
-}
+/* nav */
+const sections = ['g1','g2','g3','g4'];
+let currentIndex = 0;
+
 function showGame(i){
-  currentIndex = i;
-  $('#menu').classList.add('hidden');
-  sections.forEach((id,idx)=>$('#'+id).classList.toggle('hidden', idx!==i));
-  $('#flowTxt').textContent = `Spill ${i+1}/5`;
-  // on show: ensure game is initialized
-  if(i===0) g1.ensure();
-  if(i===1) g2.ensure();
-  if(i===2) g3.ensure();
-  if(i===3) g4.ensure();
-  if(i===4) g5.ensure();
+  currentIndex = (i+sections.length) % sections.length;
+  sections.forEach((id, idx)=>$('#'+id).classList.toggle('hidden', idx!==currentIndex));
+  $('#topTitle').textContent = gameTitles[currentIndex];
+  // ensure init
+  if(currentIndex===0) g1.ensure();
+  if(currentIndex===1) g2.ensure();
+  if(currentIndex===2) g3.ensure();
+  if(currentIndex===3) g4.ensure();
 }
 
-$('#homeBtn').addEventListener('click', showMenu);
-$('#prevBtn').addEventListener('click', ()=>{
-  if(currentIndex===-1) return;
-  if(currentIndex===0) showMenu();
-  else showGame(currentIndex-1);
-});
-$('#nextBtn').addEventListener('click', ()=>{
-  if(currentIndex===-1) showGame(0);
-  else if(currentIndex<sections.length-1) showGame(currentIndex+1);
-});
-$$('[data-go]').forEach(b=>b.addEventListener('click', e=>showGame(+e.currentTarget.dataset.go)));
+$('#prevBtn').addEventListener('click', ()=>showGame(currentIndex-1));
+$('#nextBtn').addEventListener('click', ()=>showGame(currentIndex+1));
 
 /* -------------------------
-   GAME 1 – D'Woch leeft
+   G1 Wei een Dag
+   Random day + random question type
 --------------------------*/
 const g1 = (()=> {
   let started=false;
-  let idx=0; // current day index in days[0..6]
-  let correctCount=0; // how many transitions correct (6 transitions)
-  function renderCurrent(){
-    const d = days[idx];
+  let round=0;
+  const total=10;
+
+  let currentIdx=0;
+  let qType=null; // 'muer' 'iwwermuer' 'geschter' 'virgeschter'
+
+  function pickRound(){
+    // ensure offsets valid for all types by picking day index 2..4
+    currentIdx = 2 + Math.floor(Math.random()*3); // 2,3,4
+    const types = ['muer','iwwermuer','geschter','virgeschter'];
+    qType = types[Math.floor(Math.random()*types.length)];
+  }
+
+  function offsetForType(t){
+    if(t==='muer') return 1;
+    if(t==='iwwermuer') return 2;
+    if(t==='geschter') return -1;
+    return -2; // virgeschter
+  }
+
+  function textForType(t){
+    if(t==='muer') return 'Wei een Dag ass muer';
+    if(t==='iwwermuer') return 'Wei een Dag ass iwwermuer';
+    if(t==='geschter') return 'Wei een Dag war geschter';
+    return 'Wei een Dag war virgeschter';
+  }
+
+  function correctDay(){
+    const off = offsetForType(qType);
+    return days[currentIdx + off];
+  }
+
+  function render(){
+    const d = days[currentIdx];
     const box = $('#g1Current');
     box.className = `cal ${d.colorClass}`;
     box.querySelector('.label').textContent = d.name;
-    $('#g1Prog').textContent = `${correctCount}/6`;
+    $('#g1Question').textContent = textForType(qType);
+    $('#g1Prog').textContent = `${Math.min(round+1,total)} vun ${total}`;
   }
 
   function buildOptions(){
     const holder = $('#g1Options');
     holder.innerHTML = '';
-    if(idx>=days.length-1){
-      const done = document.createElement('div');
-      done.className='inst';
-      done.innerHTML = `<b>Fäerdeg!</b> Du hues d'Woch komplett gemaach. 🎉<br/>Tippen op <b>Neistarten</b> fir nach eng Kéier.`;
-      holder.appendChild(done);
-      return;
-    }
-    const correct = days[idx+1];
-    const distractors = shuffle(days.filter((d,i)=> i!==idx+1 && i!==idx).slice(0,2));
-    const opts = shuffle([correct, ...distractors]);
 
-    opts.forEach(d=>{
-      const btn = document.createElement('button');
-      btn.className = 'btn btnPrimary';
-      btn.textContent = d.name;
-      btn.addEventListener('click', ()=>{
-        if(d.key === correct.key){
-          flash(btn,true);
-          correctCount++;
-          idx++;
-          renderCurrent();
-          setTimeout(buildOptions, 260);
-        }else{
-          flash(btn,false);
+    const correct = correctDay();
+    const distract = shuffle(days.filter(x=>x.key!==correct.key)).slice(0,3);
+    const opts = shuffle([correct, ...distract]);
+
+    opts.forEach(o=>{
+      const b = document.createElement('button');
+      b.className='btn btnPrimary';
+      b.textContent = o.name;
+      b.addEventListener('click', ()=>{
+        const good = (o.key===correct.key);
+        flash(b, good);
+        if(good){
+          round++;
+          if(round>=total){
+            // end screen inside options
+            holder.innerHTML='';
+            const end = document.createElement('div');
+            end.className='inst';
+            end.innerHTML = '<b>Fäerdeg</b><br/>Neistarten fir nach eng Kéier';
+            holder.appendChild(end);
+            return;
+          }
+          setTimeout(()=>{
+            pickRound();
+            render();
+            buildOptions();
+          }, 360);
         }
       });
-      holder.appendChild(btn);
+      holder.appendChild(b);
     });
   }
 
   function restart(){
-    idx=0;
-    correctCount=0;
-    renderCurrent();
+    round=0;
+    pickRound();
+    render();
     buildOptions();
   }
 
@@ -634,23 +567,32 @@ const g1 = (()=> {
 })();
 
 /* -------------------------
-   GAME 2 – De verschwonnene Dag
+   G2 Wat feelt
+   Black day boxes, remove missing day box entirely
+   Auto next round on correct
 --------------------------*/
 const g2 = (()=> {
   let started=false;
+  let round=0;
+  const total=12;
   let missingKey=null;
-  let stage='idle'; // idle, showing, hidden
+  let phase='show'; // show or hide
   let canAnswer=false;
 
-  function renderWeek(showAll=true){
+  function renderWeek(showAll){
     const row = $('#g2Week');
     row.innerHTML='';
+
     days.forEach(d=>{
+      if(!showAll && d.key===missingKey){
+        // remove box entirely
+        return;
+      }
       const el = document.createElement('div');
-      el.className = `cal ${d.colorClass}`;
+      el.className = 'cal black';
       el.style.minWidth='140px';
       el.style.transform='scale(.95)';
-      el.innerHTML = `<div class="small">${showAll ? '' : (d.key===missingKey ? '…' : '')}</div><div class="label">${(showAll || d.key!==missingKey) ? d.name : '____'}</div>`;
+      el.innerHTML = `<div class="small"></div><div class="label">${d.name}</div>`;
       row.appendChild(el);
     });
   }
@@ -659,76 +601,93 @@ const g2 = (()=> {
     const holder = $('#g2Options');
     holder.innerHTML='';
     shuffle(days).forEach(d=>{
-      const btn = document.createElement('button');
-      btn.className='btn btnPrimary';
-      btn.textContent=d.name;
-      btn.addEventListener('click', ()=>{
+      const b = document.createElement('button');
+      b.className='btn btnPrimary';
+      b.textContent = d.name;
+      b.addEventListener('click', ()=>{
         if(!canAnswer) return;
-        if(d.key===missingKey){
-          flash(btn,true);
-          $('#g2Status').textContent='Richteg! ✅';
+        const good = (d.key===missingKey);
+        flash(b, good);
+        if(good){
+          $('#g2Status').textContent='Richteg';
           canAnswer=false;
+          setTimeout(nextRound, 420);
         }else{
-          flash(btn,false);
-          $('#g2Status').textContent='Probéier nach eng Kéier…';
+          $('#g2Status').textContent='Probéier nach eng Kéier';
         }
       });
-      holder.appendChild(btn);
+      holder.appendChild(b);
     });
   }
 
-  function newRound(){
+  async function nextRound(){
+    round++;
+    if(round>=total){
+      $('#g2Prog').textContent = `${total} vun ${total}`;
+      $('#g2Status').textContent = 'Fäerdeg';
+      renderWeek(true);
+      return;
+    }
+    $('#g2Prog').textContent = `${round+1} vun ${total}`;
     missingKey = shuffle(days)[0].key;
-    stage='idle';
-    canAnswer=false;
-    $('#g2Status').textContent='Bereet?';
-    renderWeek(true);
-  }
 
-  async function start(){
-    if(stage!=='idle') return;
-    stage='showing';
-    $('#g2Status').textContent='Kuck gutt…';
+    // show full week briefly
+    $('#g2Status').textContent='Kuck gutt';
     renderWeek(true);
-    await new Promise(r=>setTimeout(r, 1200));
-    stage='hidden';
-    $('#g2Status').textContent='Wéi en Dag feelt?';
+    canAnswer=false;
+    await new Promise(r=>setTimeout(r, 1100));
+
+    // hide missing
+    $('#g2Status').textContent='Wat feelt';
     renderWeek(false);
     canAnswer=true;
+  }
+
+  function restart(){
+    round=0;
+    missingKey = shuffle(days)[0].key;
+    $('#g2Prog').textContent = `1 vun ${total}`;
+    buildOptions();
+    // start first round
+    (async ()=>{
+      $('#g2Status').textContent='Kuck gutt';
+      renderWeek(true);
+      canAnswer=false;
+      await new Promise(r=>setTimeout(r, 1100));
+      $('#g2Status').textContent='Wat feelt';
+      renderWeek(false);
+      canAnswer=true;
+    })();
   }
 
   function ensure(){
     if(started) return;
     started=true;
-    $('#g2Start').addEventListener('click', start);
-    $('#g2New').addEventListener('click', ()=>{
-      newRound(); // keep options; allow restart
-    });
-    buildOptions();
-    newRound();
+    $('#g2Restart').addEventListener('click', restart);
+    restart();
   }
 
   return {ensure};
 })();
 
 /* -------------------------
-   GAME 3 – Dag oder ëmmer? (-s)
-   Tap-to-select + tap-to-drop bins
+   G3 Ee Mol oder emmer
+   Remove answer tags on cards
 --------------------------*/
 const g3 = (()=> {
   let started=false;
   let pool=[];
   let selectedId=null;
   let done=0;
+  const total=10;
 
-  function makeSentenceCard(item){
+  function makeCard(item){
     const el = document.createElement('div');
     el.className='token';
     el.dataset.id=item.id;
-    el.innerHTML = `<div class="tText">${item.text}</div><div class="tTag">${item.tag}</div>`;
+    el.innerHTML = `<div class="tText">${item.text}</div>`;
     el.addEventListener('click', ()=>{
       if(el.classList.contains('hidden')) return;
-      // select
       $$('#g3Cards .token').forEach(x=>x.classList.remove('selected'));
       el.classList.add('selected');
       selectedId = item.id;
@@ -739,33 +698,28 @@ const g3 = (()=> {
   function restart(){
     done=0;
     selectedId=null;
-    $('#g3Score').textContent = `${done}/10`;
-    $('#binDayDrop').innerHTML='';
-    $('#binRegDrop').innerHTML='';
+    $('#g3Score').textContent = `${done} vun ${total}`;
+    $('#binOnceDrop').innerHTML='';
+    $('#binAlwaysDrop').innerHTML='';
     const holder = $('#g3Cards');
     holder.innerHTML='';
-    pool = [];
 
-    // Build 10 items (mix of "e Méinden" vs "méindes")
     const base = shuffle(days).slice(0,5);
-    base.forEach((d, i)=>{
+    pool = [];
+    base.forEach(d=>{
       pool.push({
-        id:`day_${d.key}`,
-        type:'day',
-        tag:'En Dag',
+        id:`once_${d.key}`,
+        type:'once',
         text:`Ech ginn <b>e ${d.name}</b> schwammen.`
       });
       pool.push({
-        id:`reg_${d.key}`,
-        type:'reg',
-        tag:'Reegelméisseg',
+        id:`always_${d.key}`,
+        type:'always',
         text:`Ech ginn <b>${d.adv}</b> schwammen.`
       });
     });
 
-    shuffle(pool).forEach(item=>{
-      holder.appendChild(makeSentenceCard(item));
-    });
+    shuffle(pool).forEach(it=>holder.appendChild(makeCard(it)));
   }
 
   function place(binType){
@@ -774,30 +728,27 @@ const g3 = (()=> {
     if(!item) return;
 
     const card = $(`.token[data-id="${selectedId}"]`, $('#g3Cards'));
-    if(!card) return;
-
-    const good = (binType === item.type);
+    const good = (binType===item.type);
     flash(card, good);
 
     if(good){
-      // move into bin drop area
       card.classList.remove('selected');
-      selectedId=null;
       card.classList.add('hidden');
+      selectedId=null;
 
       const chip = document.createElement('div');
       chip.className='chip';
       chip.innerHTML = item.text;
-      if(binType==='day') $('#binDayDrop').appendChild(chip);
-      else $('#binRegDrop').appendChild(chip);
+      if(binType==='once') $('#binOnceDrop').appendChild(chip);
+      else $('#binAlwaysDrop').appendChild(chip);
 
       done++;
-      $('#g3Score').textContent = `${done}/10`;
-      if(done===10){
+      $('#g3Score').textContent = `${done} vun ${total}`;
+      if(done===total){
         const end = document.createElement('div');
         end.className='inst';
         end.style.marginTop='10px';
-        end.innerHTML = `<b>Alles richteg geléist!</b> 🎉`;
+        end.innerHTML = '<b>Alles richteg</b>';
         $('#g3Cards').appendChild(end);
       }
     }
@@ -807,9 +758,7 @@ const g3 = (()=> {
     if(started) return;
     started=true;
     $('#g3Restart').addEventListener('click', restart);
-    $$('[data-bin]').forEach(btn=>{
-      btn.addEventListener('click', ()=>place(btn.dataset.bin));
-    });
+    $$('[data-bin]').forEach(btn=>btn.addEventListener('click', ()=>place(btn.dataset.bin)));
     restart();
   }
 
@@ -817,245 +766,138 @@ const g3 = (()=> {
 })();
 
 /* -------------------------
-   GAME 4 – Wéi oft? Funnel
+   G4 Wei oft den Tommi
+   25 rounds with provided images
+   Show a mini week with 7 boxes, some filled with the activity image
 --------------------------*/
 const g4 = (()=> {
   let started=false;
-  let selectedKey=null;
+  let round=0;
+  const total=25;
   let items=[];
-  let done=0;
+  let current=null;
+  let canAnswer=true;
 
-  // Predefined correct zones (feel free to tweak)
-  const correctZoneByAct = {
-    duschen:'alldag',
-    bitzen:'oft',
-    tele:'oft',
-    spads:'heiansdo',
-    schwammen:'heiansdo',
-    kachen:'heiansdo',
-    molen:'heiansdo',
-    turnen:'ni'
-  };
+  const actSet = [
+    {key:'duschen', verb:'duscht', label:'duschen', img:'https://i.postimg.cc/r0xs57nR/duschen.png'},
+    {key:'liesen',  verb:'liest',  label:'liesen',  img:'https://i.postimg.cc/jwP2yBg7/liesen.png'},
+    {key:'molen',   verb:'moolt',  label:'molen',   img:'https://i.postimg.cc/N9mFRZJR/molen.png'},
+    {key:'schwammen', verb:'schwëmmt', label:'schwammen', img:'https://i.postimg.cc/tZWJF8SP/schwammen.png'},
+    {key:'spillen', verb:'spills', label:'spillen', img:'https://i.postimg.cc/tZWJF8S3/spillen.png'},
+  ];
 
-  function buildActCard(act){
-    const el = document.createElement('div');
-    el.className='token';
-    el.dataset.key=act.key;
-    el.innerHTML = `<div class="tText">${act.icon} ${act.label}</div><div class="tTag">?</div>`;
-    el.addEventListener('click', ()=>{
-      $$('#g4Acts .token').forEach(x=>x.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedKey = act.key;
+  function makeWeekPattern(freqKey){
+    // returns boolean[7] for whether activity happens that day
+    if(freqKey==='alldag') return Array(7).fill(true);
+    if(freqKey==='ni') return Array(7).fill(false);
+
+    let count = 0;
+    if(freqKey==='oft') count = 4 + Math.floor(Math.random()*3);      // 4..6
+    if(freqKey==='heiansdo') count = 1 + Math.floor(Math.random()*3); // 1..3
+
+    const idxs = shuffle([0,1,2,3,4,5,6]).slice(0, count);
+    const arr = Array(7).fill(false);
+    idxs.forEach(i=>arr[i]=true);
+    return arr;
+  }
+
+  function buildItems(){
+    // create 25 mixed examples, shuffled each reload
+    const buckets = ['alldag','oft','heiansdo','ni'];
+    const tmp = [];
+    for(let i=0;i<total;i++){
+      const act = actSet[Math.floor(Math.random()*actSet.length)];
+      const f = buckets[Math.floor(Math.random()*buckets.length)];
+      tmp.push({
+        actKey: act.key,
+        verb: act.verb,
+        label: act.label,
+        img: act.img,
+        freqKey: f,
+        week: makeWeekPattern(f)
+      });
+    }
+    items = shuffle(tmp);
+  }
+
+  function renderRound(){
+    current = items[round];
+    $('#g4Prog').textContent = `${round+1} vun ${total}`;
+    $('#g4Status').textContent = 'Wielt';
+    canAnswer=true;
+
+    $('#g4Question').textContent = `Wei oft ${current.verb} den Tommi`;
+
+    const week = $('#g4MiniWeek');
+    week.innerHTML='';
+    for(let i=0;i<7;i++){
+      const cell = document.createElement('div');
+      cell.className='miniDay';
+      if(current.week[i]){
+        const img = document.createElement('img');
+        img.src = current.img;
+        img.alt = current.label;
+        cell.appendChild(img);
+      }else{
+        const dot = document.createElement('div');
+        dot.className='muted';
+        dot.style.fontSize='1.4rem';
+        dot.textContent=' ';
+        cell.appendChild(dot);
+      }
+      week.appendChild(cell);
+    }
+
+    const opts = $('#g4Options');
+    opts.innerHTML='';
+    shuffle(freq).forEach(f=>{
+      const b = document.createElement('button');
+      b.className='btn btnPrimary';
+      b.textContent = f.label;
+      b.addEventListener('click', ()=>{
+        if(!canAnswer) return;
+        const good = (f.key===current.freqKey);
+        flash(b, good);
+        if(good){
+          canAnswer=false;
+          $('#g4Status').textContent = 'Richteg';
+          setTimeout(()=>{
+            round++;
+            if(round>=total){
+              $('#g4Status').textContent='Fäerdeg';
+              $('#g4Question').textContent='Alles richteg';
+              opts.innerHTML='';
+              return;
+            }
+            renderRound();
+          }, 420);
+        }else{
+          $('#g4Status').textContent = 'Probéier nach eng Kéier';
+        }
+      });
+      opts.appendChild(b);
     });
-    return el;
   }
 
   function restart(){
-    selectedKey=null;
-    done=0;
-    $('#g4Score').textContent = `${done}/8`;
-    $$('.zone').forEach(z=>z.innerHTML='');
-
-    const holder = $('#g4Acts');
-    holder.innerHTML='';
-
-    items = shuffle(activities).slice(0,8);
-    items.forEach(act=>holder.appendChild(buildActCard(act)));
-  }
-
-  function drop(zoneKey){
-    if(!selectedKey) return;
-    const act = items.find(a=>a.key===selectedKey);
-    if(!act) return;
-
-    const card = $(`.token[data-key="${selectedKey}"]`, $('#g4Acts'));
-    const good = (correctZoneByAct[selectedKey] === zoneKey);
-    flash(card, good);
-
-    if(good){
-      // move to zone as chip
-      card.classList.remove('selected');
-      card.classList.add('hidden');
-      selectedKey=null;
-
-      const chip = document.createElement('div');
-      chip.className='chip';
-      chip.innerHTML = `${act.icon} ${act.label}`;
-      $(`.zone[data-zone="${zoneKey}"]`).appendChild(chip);
-
-      done++;
-      $('#g4Score').textContent = `${done}/8`;
-      if(done===8){
-        const fin = document.createElement('div');
-        fin.className='inst';
-        fin.style.marginTop='10px';
-        fin.innerHTML = `<b>Super!</b> Elo bass du prett fir „Wéi oft?“ ✅`;
-        $('.funnel').appendChild(fin);
-      }
-    }
+    round=0;
+    buildItems();
+    renderRound();
   }
 
   function ensure(){
     if(started) return;
     started=true;
     $('#g4Restart').addEventListener('click', restart);
-    $$('[data-zonebtn]').forEach(btn=>{
-      btn.addEventListener('click', ()=>drop(btn.dataset.zonebtn));
-    });
     restart();
   }
 
   return {ensure};
 })();
 
-/* -------------------------
-   GAME 5 – Dem Tommi seng Woch
---------------------------*/
-const g5 = (()=> {
-  let started=false;
-  let activeDayKey=null;
-  let qIndex=0;
-  let score=0;
-
-  // Tommi schedule: choose which activities happen on which day
-  // (Swap these later to match your chapter icons precisely.)
-  const tommi = {
-    mon:['schwammen','duschen'],
-    tue:['bitzen','duschen'],
-    wed:['bitzen','duschen'],
-    thu:['bitzen','duschen'],
-    fri:['molen','duschen','schwammen'],
-    sat:['molen','bitzen','duschen'],
-    sun:['bitzen','duschen'],
-  };
-
-  // Questions aligned with your worksheet style (kachen/molen/tele/schwammen/bitzen/duschen)
-  // We compute frequency from the schedule and map to labels.
-  const qActs = ['molen','schwammen','bitzen','duschen','tele']; // 5 questions (tele intentionally absent -> ni)
-  const freqOrder = ['alldag','oft','heiansdo','ni'];
-
-  function freqFromDays(count){
-    // count across 7 days
-    if(count===7) return 'alldag';
-    if(count>=4) return 'oft';
-    if(count>=1) return 'heiansdo';
-    return 'ni';
-  }
-
-  function countAct(actKey){
-    let c=0;
-    Object.keys(tommi).forEach(dk=>{
-      if(tommi[dk].includes(actKey)) c++;
-    });
-    return c;
-  }
-
-  function buildWeek(){
-    const grid = $('#g5Week');
-    grid.innerHTML='';
-    days.forEach(d=>{
-      const panel = document.createElement('div');
-      panel.className='dayPanel';
-      panel.dataset.day=d.key;
-
-      // top "calendar-ish" feel
-      panel.innerHTML = `
-        <div class="dpTitle">${d.name}</div>
-        <div class="acts" id="acts_${d.key}"></div>
-      `;
-
-      panel.addEventListener('click', ()=>{
-        setActiveDay(d.key);
-      });
-
-      // paint subtle top border colour
-      panel.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue(`--${d.key}`)?.trim() || 'var(--ink)';
-      grid.appendChild(panel);
-
-      const actsDiv = panel.querySelector('.acts');
-      const list = tommi[d.key] || [];
-      list.forEach(aKey=>{
-        const act = activities.find(x=>x.key===aKey);
-        const ic = document.createElement('div');
-        ic.className='actIcon';
-        ic.textContent = act ? act.icon : '•';
-        ic.title = act ? act.label : aKey;
-        actsDiv.appendChild(ic);
-      });
-
-      if(list.length===0){
-        const empty = document.createElement('div');
-        empty.className='muted';
-        empty.textContent='(näischt)';
-        actsDiv.appendChild(empty);
-      }
-    });
-  }
-
-  function setActiveDay(dayKey){
-    activeDayKey = dayKey;
-    $$('.dayPanel').forEach(p=>p.classList.toggle('active', p.dataset.day===dayKey));
-  }
-
-  function buildQuestion(){
-    const actKey = qActs[qIndex];
-    const act = activities.find(x=>x.key===actKey) || {label:actKey, icon:'❓'};
-    const count = countAct(actKey);
-    const correct = freqFromDays(count);
-
-    $('#g5QTitle').innerHTML = `Wéi oft <b>${act.label}</b> den Tommi? ${act.icon}`;
-
-    const mc = $('#g5MC');
-    mc.innerHTML='';
-    shuffle(freqOrder).forEach(fk=>{
-      const b = document.createElement('button');
-      b.className='btn btnPrimary';
-      b.textContent = freqLabels[fk];
-      b.addEventListener('click', ()=>{
-        const good = (fk===correct);
-        flash(b, good);
-        if(good){
-          score++;
-          qIndex++;
-          $('#g5Score').textContent = `${score}/5`;
-          if(qIndex>=qActs.length){
-            $('#g5QTitle').innerHTML = `<b>Alles richteg!</b> 🎉 Du bass prett fir d'Froen um Blat.`;
-            mc.innerHTML='';
-            const tip = document.createElement('div');
-            tip.className='inst';
-            tip.style.marginTop='10px';
-            tip.innerHTML = `Bonus: Tippen op en Dag uewen a beschreif en: <b>„${days.find(d=>d.key==='fri').name} …“</b>`;
-            mc.appendChild(tip);
-          }else{
-            setTimeout(buildQuestion, 320);
-          }
-        }
-      });
-      mc.appendChild(b);
-    });
-  }
-
-  function restart(){
-    qIndex=0;
-    score=0;
-    $('#g5Score').textContent = `${score}/5`;
-    buildWeek();
-    setActiveDay('mon');
-    buildQuestion();
-  }
-
-  function ensure(){
-    if(started) return;
-    started=true;
-    $('#g5Restart').addEventListener('click', restart);
-    restart();
-  }
-
-  return {ensure};
-})();
-
-/* Start on menu */
-showMenu();
+/* start */
+showGame(0);
 </script>
 </body>
 </html>
+
